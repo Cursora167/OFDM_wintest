@@ -8,40 +8,22 @@ msg_module = tran_module(msg_encode,module_mode,symbol_num, ...
 %% ifft
 msg_ifft = tran_ifft(msg_module,FFT_num,CP_num);
 %% Window
-msg_window = Window_Add(msg_ifft,symbol_num,FFT_num,CP_num,win_len);
+msg_window = Window_Add(msg_ifft,symbol_num,FFT_num,CP_num);
 %% 组帧
-msg_blank = zeros(1,200);
+msg_blank = zeros(1,500);
 msg_frame = [msg_blank,pream,msg_window,msg_blank];
 msg_frame_ori = [msg_blank,pream,reshape(msg_ifft.',1,[]),msg_blank];
 
 
-msg_tx1 = msg_frame_ori(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num));
-msg_tx2 = msg_frame(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num) + win_len);
+msg_tx1 = msg_frame_ori(length(msg_blank) + length(pream) + 1:3440);
+msg_tx2 = msg_frame(1089:3456);
 
-% %发射信号频域图
-% V_FFT = 262144;
-% % 计算频谱（加 fftshift、取幅度平方、转 dB）
-% spec1 = 10*log10(abs(fftshift(fft(msg_tx1, V_FFT))));
-% spec2 = 10*log10(abs(fftshift(fft(msg_tx2, V_FFT))));
-% 
-% % 构造频率轴
-% V_Freq = linspace(-fb/2, fb/2, V_FFT);  % 居中显示（对称）
-% 
-% % 画图
-% figure;
-% plot(V_Freq, spec1, 'b-', 'LineWidth', 1.2); hold on;
-% plot(V_Freq, spec2, 'r--', 'LineWidth', 1.2);
-% grid on;
-% 
-% xlabel('Frequency (Hz)');
-% ylabel('Magnitude (dB)');
-% title('Spectrum Comparison');
-% legend('msg\_tx1 (Original)', 'msg\_tx2 (Windowed)');
+
 
 Ho = filtertest;
-msg_filter = filter(Ho,msg_tx1);
+msg_filter = filter(Ho,msg_tx);
 % 频域图(降采样)
-% V_FFT = 262144;
+% V_FFT = 500000;
 % figure;
 % msg_tx_freq = 10*log10(abs(fftshift(fft(msg_filter,V_FFT))));
 % V_Freq = 0 : fb/V_FFT : fb-fb/V_FFT;
@@ -52,11 +34,11 @@ msg_filter = filter(Ho,msg_tx1);
 
 %% 画图
 %发射信号频域图
-% V_FFT = 500000;
-% figure;
-% msg_tx_freq = 10*log10(abs(fftshift(fft(windowed_signal(200+294*2+1:200+294*3),V_FFT))));
-% V_Freq = 0 : fb/V_FFT : fb-fb/V_FFT;
-% plot(V_Freq,msg_tx_freq);
+V_FFT = 500000;
+figure;
+msg_tx_freq = 10*log10(abs(fftshift(fft(windowed_signal(200+294*2+1:200+294*3),V_FFT))));
+V_Freq = 0 : fb/V_FFT : fb-fb/V_FFT;
+plot(V_Freq,msg_tx_freq);
 % msg_tx = msg_tx(1551:3902);
 % figure;
 % t_tx = 0:1/fs:(length(msg_tx)-1)/fs;
@@ -67,11 +49,11 @@ msg_filter = filter(Ho,msg_tx1);
 % plot(t_tx,imag(msg_tx));
 % title('发送信号虚部');
 %发射信号频域图
-% V_FFT = 500000;
-% figure;
-% msg_tx_freq = 10*log10(abs(fftshift(fft(msg_tx,V_FFT))));
-% V_Freq = 0 : fb/V_FFT : fb-fb/V_FFT;
-% plot(V_Freq,msg_tx_freq);
+V_FFT = 500000;
+figure;
+msg_tx_freq = 10*log10(abs(fftshift(fft(msg_tx,V_FFT))));
+V_Freq = 0 : fb/V_FFT : fb-fb/V_FFT;
+plot(V_Freq,msg_tx_freq);
 % %% 滤波器设计
 % Hd = filterx;
 % Hc = filtery;

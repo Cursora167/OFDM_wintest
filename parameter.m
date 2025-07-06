@@ -7,6 +7,7 @@ fb = 11.2*1e6;                                                             %基�
 fs = 8*fb;                                                                  %采样率；
 fc = 582*1e6;                                                              %载波频率；
 cosine_filter=[rcosdesign(0.5,6,8,"sqrt")].';                               %成形滤波器；
+win_len = 16;                                                         %时域加窗长度
 
 bit_err = zeros(sim_loop,length(SNR_dB));
 frame_lost = zeros(sim_loop,length(SNR_dB));
