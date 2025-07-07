@@ -43,8 +43,6 @@ msg_filter = filter(Ho,msg_tx);
 OFDM1 = fft(msg_tx(789 + 38 : 788 + 256 +38),256);
 OFDM1_FIR = fft(msg_filter(789 + 8 + 38 : 788 + 8 + 256 + 38),256);
 ans1 = [OFDM1(2:102),OFDM1(160:255)];
-ans2 = [OFDM1_FIR(2:102),OFDM1_FIR(160:255)];
-res = mean(ans1 - ans2);
 % 频域图(降采样)
 % V_FFT = 262144;
 % figure;
