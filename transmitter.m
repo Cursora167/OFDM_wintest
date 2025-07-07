@@ -15,9 +15,9 @@ msg_frame = [msg_blank,pream,msg_window,msg_blank];
 msg_frame_ori = [msg_blank,pream,reshape(msg_ifft.',1,[]),msg_blank];
 
 
-msg_tx1 = msg_frame_ori(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num));
-msg_tx2 = msg_frame(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num) + win_len);
-
+% msg_tx1 = msg_frame_ori(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num));
+% msg_tx2 = msg_frame(length(msg_blank) + length(pream) + 1:length(msg_blank) + length(pream) + 8*(FFT_num + CP_num) + win_len);
+msg_tx = msg_frame;
 % %发射信号频域图
 % V_FFT = 262144;
 % % 计算频谱（加 fftshift、取幅度平方、转 dB）
@@ -38,8 +38,8 @@ msg_tx2 = msg_frame(length(msg_blank) + length(pream) + 1:length(msg_blank) + le
 % title('Spectrum Comparison');
 % legend('msg\_tx1 (Original)', 'msg\_tx2 (Windowed)');
 
-Ho = filtertest;
-msg_filter = filter(Ho,msg_tx1);
+% Ho = filtertest;
+% msg_filter = filter(Ho,msg_tx1);
 % 频域图(降采样)
 % V_FFT = 262144;
 % figure;
